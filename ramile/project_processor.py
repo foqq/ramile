@@ -27,7 +27,7 @@ class ProjectProcessor(object):
                     continue
                 name, extension = os.path.splitext(file_name)
                 if self.is_interested_file(name, extension):
-                    info = FileInfo(file_path, file_name, extension)
+                    info = FileInfo(file_path, file_path[len(self.project.source_root)+1:], file_name, extension)
                     self.files.append(info)
         return
 

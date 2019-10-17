@@ -5,6 +5,8 @@ class FileProcessorBase(object):
     """ Base class for file processors. The processor for each lanuage should inherit from this class.
     """
     expected_extensions = []
+    header_template = '// __file__\n'
+    header_filename_placeholder = '__file__'
     filters = []
 
     def __init__(self):
@@ -49,7 +51,7 @@ class LineFilterBase(object):
     """ A filter will process each line, and determine whether each line should be dropped. A filter can also perform any neccessary process on the line and replace the original line.
     """
 
-    def filter(self, line):
+    def filter(self, file, line):
         """ Filters a line of code, outputs the filtered content, and a flag whether the line should be dropped.
         """
         return line, False
@@ -70,6 +72,8 @@ class FileProcessor(object):
 
     def process(self, file):
         processor = self.__get_cached_processor(file.file_extension)
+        if processor.header_template:
+            yield processor.header_template.replace(processor.header_filename_placeholder, file.relative_path)
         for output in processor.process(file):
             yield output
 
@@ -83,6 +87,7 @@ class FileProcessor(object):
         self.__cache_processor(CssProcessor())
         self.__cache_processor(SwiftProcessor())
         self.__cache_processor(OCProcessor())
+        self.__cache_processor(ScriptProcessor())
         return
 
     def __get_cached_processor(self, extension):
@@ -104,3 +109,4 @@ from ramile.processors.html_processor import HtmlProcessor
 from ramile.processors.css_processor import CssProcessor
 from ramile.processors.swift_processor import SwiftProcessor
 from ramile.processors.oc_processor import OCProcessor
+from ramile.processors.script_processor import ScriptProcessor

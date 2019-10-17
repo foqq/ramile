@@ -7,6 +7,7 @@ from ramile.processors.html_comment_block_filter import HtmlCommentBlockFilter
 
 class HtmlProcessor(FileProcessorBase):
     expected_extensions = ['.html', '.htm']
+    header_template = '<!-- __file__ -->\n'
 
     def __init__(self):
         self.filters.append(BlankLineFilter())

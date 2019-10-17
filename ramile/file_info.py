@@ -2,13 +2,15 @@ class FileInfo(object):
     file_name = ''
     file_extension = ''
     file_path = ''
+    relative_path = ''
     is_in_comment_block = False
     blank_lines = 0
     comment_lines = 0
     extracted_lines = 0
 
-    def __init__(self, file_path, file_name, file_extension):
+    def __init__(self, file_path, relative_path, file_name, file_extension):
         self.file_path = file_path
+        self.relative_path = relative_path
         self.file_extension = file_extension
         self.file_name = file_name
         return
